@@ -79,11 +79,72 @@ module "eks" {
 
 }
 
+resource "null_resource" "run_aws_update_kubeconfig" {
+  provisioner "local-exec" {
+    command     = "aws eks update-kubeconfig --region us-east-1 --name Test_Cluster"
+    interpreter = ["bash", "-c"]
+  }
+
+  depends_on = [module.eks]
+}
+
 resource "null_resource" "run_kubectl_apply" {
   provisioner "local-exec" {
     command     = "kubectl apply -f websitedeployment.yml"
     interpreter = ["bash", "-c"]
   }
 
-  depends_on = [module.eks]
+  depends_on = [null_resource.run_aws_update_kubeconfig]
+}
+
+resource "aws_iam_role" "alb_controller_role" {
+  name = "AmazonEKSLoadBalancerControllerRole"
+
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "eks.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "alb_controller_policy" {
+  name        = "AWSLoadBalancerControllerIAMPolicy"
+  description = "IAM policy for ALB controller"
+  policy      = file("iam_policy.json")
+}
+
+resource "aws_iam_role_policy_attachment" "alb_controller_policy_attachment" {
+  policy_arn = aws_iam_policy.alb_controller_policy.arn
+  role       = aws_iam_role.alb_controller_role.name
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = "~/.kube/config"
+  }
+}
+
+resource "helm_release" "alb_controller" {
+  name       = "aws-load-balancer-controller"
+  repository = "https://aws.github.io/eks-charts"
+  chart      = "aws-load-balancer-controller"
+  namespace  = "kube-system"
+
+  values = [
+    <<EOF
+clusterName: "Test_Cluster"
+serviceAccount:
+  create: false
+  name: aws-load-balancer-controller
+region: "us-east-1"
+vpcId: ${module.vpc.vpc_id}
+EOF
+  ]
 }
