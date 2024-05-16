@@ -22,10 +22,8 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     && sudo ./aws/install \
     && rm awscliv2.zip \
     && mkdir /home/gitpod/.aws \
-    && gp sync-done AWSCLI
-
+    && gp sync-done AWSCLI \
 # Configure AWS Credentials
-RUN gp sync-await AWSCLI \
     && cd /home/gitpod/.aws/ \
     && touch credentials \
     && echo "[default]" > /home/gitpod/.aws/credentials \
