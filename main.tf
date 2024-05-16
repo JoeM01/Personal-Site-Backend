@@ -70,8 +70,21 @@ module "eks" {
     }
   }
 
+  enable_cluster_creator_admin_permissions = true
+
   tags = {
     Terraform   = "true"
     Environment = "dev"
   }
+
+}
+
+resource "null_resource" "run_kubectl_apply" {
+  provisioner "local-exec" {
+    command = "kubectl apply -f your-kubernetes-resource.yaml"
+    interpreter = ["bash", "-c"]
+    when    = "apply"
+  }
+
+  depends_on = [module.eks]
 }
