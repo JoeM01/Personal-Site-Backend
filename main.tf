@@ -81,9 +81,8 @@ module "eks" {
 
 resource "null_resource" "run_kubectl_apply" {
   provisioner "local-exec" {
-    command = "kubectl apply -f your-kubernetes-resource.yaml"
+    command     = "kubectl apply -f websitedeployment.yml"
     interpreter = ["bash", "-c"]
-    when    = "apply"
   }
 
   depends_on = [module.eks]
