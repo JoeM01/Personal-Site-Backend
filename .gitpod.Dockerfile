@@ -30,6 +30,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     && echo "aws_secret_access_key=$AWS_SECRET_KEY" >> /home/gitpod/.aws/credentials
 
 # Install KubeCTL
-RUN curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.29.3/2024-04-19/bin/linux/amd64/kubectl \
-    && chmod +x ./kubectl \
-    && mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
+    chmod +x ./kubectl && \
+    sudo mv ./kubectl /usr/local/bin/kubectl && \
+    mkdir ~/.kube
