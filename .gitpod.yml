@@ -2,3 +2,20 @@ image:
   file: .gitpod.Dockerfile
 
 # List the start up tasks. Learn more: https://www.gitpod.io/docs/configure/workspaces/tasks
+tasks:
+  - name: Install AWS CLI
+    init: |
+      curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      unzip awscliv2.zip
+      sudo ./aws/install
+      rm awscliv2.zip
+      mkdir /home/gitpod/.aws
+      gp sync-done AWSCLI
+  - name: Configure AWS Credentials
+    init: |
+      gp sync-await AWSCLI
+      cd /home/gitpod/.aws/
+      touch credentials
+      echo "[default]" > /home/gitpod/.aws/credentials
+      echo "aws_access_key_id=$AWS_ACCESS_KEY" >> /home/gitpod/.aws/credentials
+      echo "aws_secret_access_key=$AWS_SECRET_KEY" >> /home/gitpod/.aws/credentials
