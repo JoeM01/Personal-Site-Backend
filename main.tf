@@ -124,27 +124,3 @@ resource "aws_iam_role_policy_attachment" "alb_controller_policy_attachment" {
   policy_arn = aws_iam_policy.alb_controller_policy.arn
   role       = aws_iam_role.alb_controller_role.name
 }
-
-provider "helm" {
-  kubernetes {
-    config_path = "~/.kube/config"
-  }
-}
-
-resource "helm_release" "alb_controller" {
-  name       = "aws-load-balancer-controller"
-  repository = "https://aws.github.io/eks-charts"
-  chart      = "aws-load-balancer-controller"
-  namespace  = "kube-system"
-
-  values = [
-    <<EOF
-clusterName: "Test_Cluster"
-serviceAccount:
-  create: false
-  name: aws-load-balancer-controller
-region: "us-east-1"
-vpcId: ${module.vpc.vpc_id}
-EOF
-  ]
-}
