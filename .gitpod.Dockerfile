@@ -21,4 +21,5 @@ RUN curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.29.3/2024-04-19/bin/
     chmod +x ./kubectl && \
     mkdir -p $HOME/bin && \ 
     cp ./kubectl $HOME/bin/kubectl && \
-    export PATH=$HOME/bin:$PATH
+    export PATH=$HOME/bin:$PATH && \
+    echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
