@@ -1,0 +1,58 @@
+name: Push Frotend Docker Image to ECR
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Push_Img_to_ECR:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@main
+
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@main
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@v3
+
+    - name: Download kubectl
+      run: curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.29.3/2024-04-19/bin/linux/amd64/kubectl
+
+    - name: Make kubectl executable
+      run: chmod +x ./kubectl
+
+    - name: Create bin directory
+      run: mkdir -p $HOME/bin
+
+    - name: Move kubectl to bin
+      run: cp ./kubectl $HOME/bin/kubectl
+
+    - name: Add kubectl to PATH
+      run: echo 'export PATH=$HOME/bin:$PATH' >> $GITHUB_ENV
+
+    - name: Initialize Terraform 
+      run : terraform init
+      env: 
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    
+    - name: Validate Terraform configuration
+      run: terraform validate
+
+    - name: Terraform apply
+      run: terraform apply -auto-approve
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      if: github.ref == 'refs/heads/main'
+
+    - name: Confirm Terraform apply
+      run: echo "Terraform apply completed successfully"

@@ -1,7 +1,11 @@
+locals {
+  set_cluster_name= "Test_Cluster"
+}
+
 module "eks" {
   source = "terraform-aws-modules/eks/aws"
 
-  cluster_name                   = "Test_Cluster"
+  cluster_name                   = local.set_cluster_name
   cluster_endpoint_public_access = true
 
   cluster_addons = {

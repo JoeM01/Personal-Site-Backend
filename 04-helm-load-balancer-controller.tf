@@ -42,3 +42,22 @@ resource "helm_release" "aws_load_balancer_controller" {
     value = module.aws_load_balancer_controller_irsa_role.iam_role_arn
   }
 }
+
+resource "null_resource" "run_aws_update_kubeconfig" {
+  provisioner "local-exec" {
+    command     = "aws eks update-kubeconfig --region ${data.aws_region.default} --name ${data.aws_eks_cluster.default}"
+    interpreter = ["bash", "-c"]
+  }
+
+  depends_on = [helm_release.aws_load_balancer_controller]
+}
+
+resource "null_resource" "run_kubectl_apply" {
+  provisioner "local-exec" {
+    command     = "kubectl apply -f websitedeployment.yml"
+    interpreter = ["bash", "-c"]
+  }
+
+  depends_on = [null_resource.run_aws_update_kubeconfig]
+}
+
