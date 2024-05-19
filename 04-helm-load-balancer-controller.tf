@@ -45,7 +45,7 @@ resource "helm_release" "aws_load_balancer_controller" {
 
 resource "null_resource" "run_aws_update_kubeconfig" {
   provisioner "local-exec" {
-    command     = "aws eks update-kubeconfig --region ${data.aws_region.default} --name ${data.aws_eks_cluster.default}"
+    command     = "aws eks update-kubeconfig --region ${data.aws_region.default.name} --name ${data.aws_eks_cluster.default.name}"
     interpreter = ["bash", "-c"]
   }
 
