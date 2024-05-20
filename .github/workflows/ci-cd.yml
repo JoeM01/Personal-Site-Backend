@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  Build_Or_Destroy_Infra:
+  Build_Or_Destroy_Infr:
     runs-on: ubuntu-latest
 
     steps:
