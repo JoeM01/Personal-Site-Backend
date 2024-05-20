@@ -50,6 +50,7 @@ jobs:
     - name: Remove K8 resources if destroying Infra
       if: ${{endsWith(github.event.head_commit.message, '[destroy]')}}
       run: |
+          aws eks update-kubeconfig --region us-east-1 --name Test_Cluster
           kubectl delete -f websitedeployment.yml
 
     - name: Destroy Terraform Infra after taking down K8 resources
