@@ -47,12 +47,20 @@ jobs:
     - name: Validate Terraform configuration
       run: terraform validate
 
-    - name: Terraform apply
-      run: terraform apply -auto-approve
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      if: github.ref == 'refs/heads/main'
+    - name: Determine Action and Apply or Destroy
+      run: |
+        if endsWith(github.event.head_commit.message, '[destroy]'); then
+          kubectl delete -f websitedeployment.yml
+          echo "action=destroy" >> $GITHUB_ENV
+        else
+          echo "Running terraform apply"
+          terraform apply -auto-approve
+        fi
+
+    - name: Destroy Terraform Infra after taking down K8 resources
+      if: env.action == 'destroy'
+      run: terraform destroy -auto-approve
+
 
     - name: Confirm Terraform apply
       run: echo "Terraform apply completed successfully"

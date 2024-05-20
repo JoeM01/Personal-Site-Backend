@@ -43,9 +43,6 @@ module "eks" {
     Terraform   = "true"
     Environment = "dev"
   }
-
-  depends_on = [ null_resource.eks_cleanup ]
-
 }
 
 data "aws_eks_cluster" "default" {
@@ -67,12 +64,5 @@ provider "kubernetes" {
     api_version = "client.authentication.k8s.io/v1beta1"
     args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.default.id]
     command     = "aws"
-  }
-}
-
-resource "null_resource" "eks_cleanup" {
-  provisioner "local-exec" {
-    command = "kubectl delete -f websitedeployment.yml"
-    when = destroy
   }
 }
