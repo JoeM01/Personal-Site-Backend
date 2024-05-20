@@ -49,7 +49,7 @@ jobs:
 
     - name: Determine Action and Apply or Destroy
       run: |
-        if endsWith(github.event.head_commit.message, '[destroy]'); then
+        if ${{endsWith(github.event.head_commit.message, '[destroy]')}}; then
           kubectl delete -f websitedeployment.yml
           echo "action=destroy" >> $GITHUB_ENV
         else
