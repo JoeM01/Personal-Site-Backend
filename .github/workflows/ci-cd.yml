@@ -51,7 +51,7 @@ jobs:
       if: ${{endsWith(github.event.head_commit.message, '[destroy]')}}
       run: |
           EKS_CLUSTER_NAME=$(aws eks list-clusters --region ${{ secrets.AWS_REGION }} --output text | awk '{print $2}')
-          AWS_REGION = ${{ secrets.AWS_REGION }}
+          AWS_REGION = ${{ secrets.AWS_REGION}}
           echo "$AWS_REGION"
           aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
           kubectl delete -f websitedeployment.yml
