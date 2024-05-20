@@ -1,4 +1,4 @@
-name: Push Frotend Docker Image to ECR
+name: Build/Destroy Infrastructure
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  Push_Img_to_ECR:
+  Build_Or_Destroy_Infra:
     runs-on: ubuntu-latest
 
     steps:
@@ -47,20 +47,16 @@ jobs:
     - name: Validate Terraform configuration
       run: terraform validate
 
-    - name: Determine Action and Apply or Destroy
+    - name: Remove K8 resources if destroying Infra
+      if: ${{endsWith(github.event.head_commit.message, '[destroy]')}}
       run: |
-        if ${{endsWith(github.event.head_commit.message, '[destroy]')}}; then
           kubectl delete -f websitedeployment.yml
-          echo "action=destroy" >> $GITHUB_ENV
-        else
-          echo "Running terraform apply"
-          terraform apply -auto-approve
-        fi
 
     - name: Destroy Terraform Infra after taking down K8 resources
-      if: env.action == 'destroy'
+      if: ${{endsWith(github.event.head_commit.message, '[destroy]')}}
       run: terraform destroy -auto-approve
 
 
-    - name: Confirm Terraform apply
-      run: echo "Terraform apply completed successfully"
+    - name: Terraform Apply
+      if: ${{ !endsWith(github.event.head_commit.message, '[destroy]')}}
+      run: terraform apply -auto-approve
