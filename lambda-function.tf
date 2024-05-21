@@ -6,6 +6,6 @@ module "lambda_function" {
   handler       = "index.lambda_handler"
   runtime       = "nodejs20.x"
 
-  source_path = "./lambda_function.zip"
+  source_path = "/lambda_function.zip"
 
 }
