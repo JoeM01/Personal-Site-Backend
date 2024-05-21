@@ -22,6 +22,14 @@ module "api_gateway" {
   }
 }
 
+resource "aws_lambda_permission" "apigateway_permission" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda_function.lambda_function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${module.api_gateway.apigatewayv2_api_execution_arn}/*"
+}
+
 output "api_endpoint" {
   value = module.api_gateway.apigatewayv2_api_api_endpoint
 }
