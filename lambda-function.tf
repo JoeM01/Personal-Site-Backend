@@ -1,3 +1,9 @@
+variable "openai_api_key" {
+  description = "OpenAI API Key"
+  type        = string
+  sensitive   = true
+}
+
 module "lambda_function" {
   source = "terraform-aws-modules/lambda/aws"
 
@@ -10,7 +16,7 @@ module "lambda_function" {
   local_existing_package = "./lambda_function.zip"
 
   environment_variables = {
-    OPENAI_API_KEY = "sk-proj-arcogGyODm7CMuDFXCbeT3BlbkFJKwF20h9lYPsRQmETvTI9"
+    OPENAI_API_KEY = var.openai_api_key
   }
 
 }
