@@ -56,13 +56,9 @@ jobs:
 
     - name: Destroy Terraform Infra after taking down K8 resources
       if: ${{endsWith(github.event.head_commit.message, '[destroy]')}}
-      run: terraform destroy -auto-approve
+      run: terraform destroy -auto-approve -var "openai_api_key=${{ secrets.OPENAI_API_KEY }}" -var "langchain_api_key=${{ secrets.LANGCHAIN_API_KEY }}" -var "langchain_tracing=${{ secrets.LANGCHAIN_TRACING_V2 }}"
 
 
     - name: Terraform Apply
-      env:
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        LANGCHAIN_API_KEY: ${{ secrets.LANGCHAIN_API_KEY }}
-        LANGCHAIN_TRACING: ${{ secrets.LANGCHAIN_TRACING_V2 }}
       if: ${{ !endsWith(github.event.head_commit.message, '[destroy]')}}
       run: terraform apply -auto-approve -var "openai_api_key=${{ secrets.OPENAI_API_KEY }}" -var "langchain_api_key=${{ secrets.LANGCHAIN_API_KEY }}" -var "langchain_tracing=${{ secrets.LANGCHAIN_TRACING_V2 }}"
