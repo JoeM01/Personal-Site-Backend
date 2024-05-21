@@ -12,7 +12,7 @@ module "lambda_function" {
   handler       = "index.handler"
   runtime       = "nodejs20.x"
 
-    create_package      = false
+  create_package         = false
   local_existing_package = "./lambda_function.zip"
 
   environment_variables = {

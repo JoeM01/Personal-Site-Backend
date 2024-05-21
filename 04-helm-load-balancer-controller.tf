@@ -1,5 +1,5 @@
 module "aws_load_balancer_controller_irsa_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
   role_name = "aws-load-balancer-controller"
 
@@ -24,7 +24,7 @@ resource "helm_release" "aws_load_balancer_controller" {
   set {
     name  = "clusterName"
     value = module.eks.cluster_name
-    type = "string"
+    type  = "string"
   }
   set {
     name  = "serviceAccount.create"
@@ -34,7 +34,7 @@ resource "helm_release" "aws_load_balancer_controller" {
   set {
     name  = "serviceAccount.name"
     value = "aws-load-balancer-controller"
-    type = "string"
+    type  = "string"
   }
 
   set {
