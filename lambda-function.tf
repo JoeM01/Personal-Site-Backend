@@ -7,6 +7,6 @@ module "lambda_function" {
   runtime       = "nodejs20.x"
 
     create_package      = false
-  source_path = "./lambda_function.zip"
+  local_existing_package = "./lambda_function.zip"
 
 }
