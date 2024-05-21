@@ -4,6 +4,19 @@ variable "openai_api_key" {
   sensitive   = true
 }
 
+variable "langchain_tracing" {
+  description = "Langchain tracing"
+  type        = string
+  sensitive   = true
+}
+
+variable "langchain_api_key" {
+  description = "Langchain API Key"
+  type        = string
+  sensitive   = true
+}
+
+
 module "lambda_function" {
   source = "terraform-aws-modules/lambda/aws"
 
@@ -17,6 +30,8 @@ module "lambda_function" {
 
   environment_variables = {
     OPENAI_API_KEY = var.openai_api_key
+    LANGCHAIN_TRACING_V2 = var.langchain_tracing
+    LANGCHAIN_API_KEY = var.langchain_api_key
   }
 
 }
