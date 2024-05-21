@@ -11,6 +11,8 @@ module "api_gateway" {
     allow_origins = ["*"]
   }
 
+  create_api_domain_name = false
+
   integrations = {
     "GET /generate" = {
       lambda_arn             = module.lambda_function.lambda_function_arn
