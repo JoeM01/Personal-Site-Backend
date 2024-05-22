@@ -16,24 +16,6 @@ variable "langchain_api_key" {
   sensitive   = true
 }
 
-resource "aws_iam_role" "lambda_role" {
-  name = "lambda_execution_role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Action = "sts:AssumeRole",
-        Effect = "Allow",
-        Sid    = "",
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        }
-      }
-    ]
-  })
-}
-
 resource "aws_iam_policy" "lambda_policy" {
   name        = "lambda_dynamodb_policy"
   description = "Policy for Lambda to access DynamoDB"
@@ -53,12 +35,6 @@ resource "aws_iam_policy" "lambda_policy" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
-  role       = aws_iam_role.lambda_role.name
-  policy_arn = aws_iam_policy.lambda_policy.arn
-}
-
-
 
 module "lambda_function" {
   source = "terraform-aws-modules/lambda/aws"
@@ -70,13 +46,16 @@ module "lambda_function" {
 
   timeout = 10
 
+  attach_policy = true
+  policy = aws_iam_policy.lambda_policy.arn
+
   create_package         = false
   local_existing_package = "./lambda_function.zip"
 
   environment_variables = {
-    OPENAI_API_KEY = var.openai_api_key
+    OPENAI_API_KEY       = var.openai_api_key
     LANGCHAIN_TRACING_V2 = var.langchain_tracing
-    LANGCHAIN_API_KEY = var.langchain_api_key
+    LANGCHAIN_API_KEY    = var.langchain_api_key
   }
 
 }
