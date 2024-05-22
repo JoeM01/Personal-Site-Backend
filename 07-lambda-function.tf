@@ -47,7 +47,7 @@ module "lambda_function" {
   timeout = 10
 
   attach_policy = true
-  policy = aws_iam_policy.lambda_policy.arn
+  policy        = aws_iam_policy.lambda_policy.arn
 
   s3_bucket = aws_s3_bucket.lambda_bucket.bucket
 
@@ -57,5 +57,5 @@ module "lambda_function" {
     LANGCHAIN_API_KEY    = var.langchain_api_key
   }
 
-  depends_on = [ aws_s3_object.lambda_package  ]
+  depends_on = [aws_s3_object.lambda_package]
 }

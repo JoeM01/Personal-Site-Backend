@@ -2,8 +2,6 @@ resource "aws_s3_bucket" "lambda_bucket" {
   bucket = "lambda-deployment-bucket-for-langchain"
 }
 
-
-
 resource "null_resource" "package_lambda_function" {
   provisioner "local-exec" {
     command     = "./package-lambda.sh"
@@ -17,5 +15,5 @@ resource "aws_s3_object" "lambda_package" {
   key    = "lambda_function.zip"
   source = "lambda_function.zip"
 
-  depends_on = [ null_resource.package_lambda_function ]
+  depends_on = [null_resource.package_lambda_function]
 }
