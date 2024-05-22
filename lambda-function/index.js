@@ -32,8 +32,8 @@ exports.handler = async (event) => {
         const body = JSON.parse(event.body); // Parse the incoming JSON payload
         console.log('Received payload:', body); // Log the received payload
         
-        console.log('Key1:', event.body.key1);
-        console.log('Key2:', event.body.key2);
+        console.log('Key1:', body.key1);
+        console.log('Key2:', body.key2);
 
         const memory = new DynamoDBMemory({
             tableName: "langchain-memory",
