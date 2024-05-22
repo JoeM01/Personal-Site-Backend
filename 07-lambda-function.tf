@@ -50,11 +50,7 @@ module "lambda_function" {
   policy        = aws_iam_policy.lambda_policy.arn
 
   create_package      = false
-
-   s3_existing_package = {
-    bucket = aws_s3_bucket.lambda_bucket.id
-    key    = aws_s3_object.lambda_package.id
-  }
+  local_existing_package = "lambda_function.zip"
 
   environment_variables = {
     OPENAI_API_KEY       = var.openai_api_key
