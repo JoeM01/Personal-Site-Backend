@@ -49,8 +49,7 @@ module "lambda_function" {
   attach_policy = true
   policy = aws_iam_policy.lambda_policy.arn
 
-  create_package         = false
-  local_existing_package = "./lambda_function.zip"
+  s3_bucket = aws_s3_bucket.lambda_bucket.bucket
 
   environment_variables = {
     OPENAI_API_KEY       = var.openai_api_key
@@ -58,4 +57,5 @@ module "lambda_function" {
     LANGCHAIN_API_KEY    = var.langchain_api_key
   }
 
+  depends_on = [ aws_s3_object.lambda_package ]
 }
