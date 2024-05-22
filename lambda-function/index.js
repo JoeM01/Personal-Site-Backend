@@ -41,7 +41,7 @@ exports.handler = async (event) => {
         console.log("Chat History:", chat_memory);
 
         const response = await chain.invoke({chat_history: chat_memory  , text: event.key2 });
-        await memory.addMessage(new HumanMessage(event.key1));
+        await memory.addMessage(new HumanMessage(event.key2));
         await memory.addMessage(new AIMessage(response));
 
         return {
