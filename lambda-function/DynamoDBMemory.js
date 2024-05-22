@@ -31,6 +31,8 @@ class DynamoDBMemory extends BaseListChatMessageHistory {
         }
     }
 
+
+    // Testing if code gets sent to s3/lambda
     async getMessages() {
         const params = {
             TableName: this.tableName,
