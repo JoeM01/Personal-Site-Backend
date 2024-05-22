@@ -29,7 +29,9 @@ const chain = promptTemplate.pipe(model).pipe(parser);
 
 exports.handler = async (event) => {
     try {
-
+        const body = JSON.parse(event.body); // Parse the incoming JSON payload
+        console.log('Received payload:', body); // Log the received payload
+        
         const memory = new DynamoDBMemory({
             tableName: "langchain-memory",
             sessionId: event.key1, // Or some other unique identifier for the conversation
