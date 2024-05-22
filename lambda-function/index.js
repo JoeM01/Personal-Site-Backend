@@ -36,7 +36,8 @@ exports.handler = async (event) => {
             region: "us-east-1",
             
         });
-                const chat_memory = await memory.getMessages();
+        
+        const chat_memory = await memory.getMessages();
         console.log("Chat History:", chat_memory);
 
         const response = await chain.invoke({chat_history: chat_memory  , text: event.key2 });

@@ -38,7 +38,8 @@ class DynamoDBMemory extends BaseListChatMessageHistory {
             ExpressionAttributeValues: {
                 ":sessionId": { S: this.sessionId },
             },
-            ScanIndexForward: true, // Sort by Timestamp ascending
+            ScanIndexForward: false, // Sort by Timestamp descending
+            Limit: 10
         };
 
         try {
