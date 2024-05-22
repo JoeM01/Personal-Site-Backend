@@ -58,5 +58,4 @@ module "lambda_function" {
     LANGCHAIN_API_KEY    = var.langchain_api_key
   }
 
-  depends_on = [aws_s3_object.lambda_package]
 }
