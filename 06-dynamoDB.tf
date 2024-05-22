@@ -2,16 +2,16 @@ module "dynamodb_table" {
   source = "terraform-aws-modules/dynamodb-table/aws"
 
   name      = "langchain-memory"
-  hash_key  = "TimeStamp"
-  range_key = "sessionId"
+  range_key  = "timeStamp"
+  hash_key = "sessionId"
 
   attributes = [
     {
-      name = "TimeStamp"
+      name = "sessionId"
       type = "S"
     },
     {
-      name = "sessionId"
+      name = "timeStamp"
       type = "S"
     },
   ]
