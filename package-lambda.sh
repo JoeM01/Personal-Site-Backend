@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set variables
-LAMBDA_DIR="lambda"
+LAMBDA_DIR="lambda-function"
 ZIP_FILE="lambda_function.zip"
 
 # Remove any existing zip file
