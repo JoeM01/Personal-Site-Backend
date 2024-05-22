@@ -37,7 +37,7 @@ exports.handler = async (event) => {
 
         const memory = new DynamoDBMemory({
             tableName: "langchain-memory",
-            sessionId: event.key1, // Or some other unique identifier for the conversation
+            sessionId: body.key1, // Or some other unique identifier for the conversation
             region: "us-east-1",
             
         });
@@ -45,8 +45,8 @@ exports.handler = async (event) => {
         const chat_memory = await memory.getMessages();
         console.log("Chat History:", chat_memory);
 
-        const response = await chain.invoke({chat_history: chat_memory  , text: event.key2 });
-        await memory.addMessage(new HumanMessage(event.key2));
+        const response = await chain.invoke({chat_history: chat_memory  , text: body.key2 });
+        await memory.addMessage(new HumanMessage(body.key2));
         await memory.addMessage(new AIMessage(response));
 
         return {
