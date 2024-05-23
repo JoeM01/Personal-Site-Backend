@@ -14,7 +14,7 @@ module "api_gateway" {
   create_api_domain_name = false
 
   integrations = {
-    "GET /generate" = {
+    "PUT /generate" = {
       lambda_arn             = module.lambda_function.lambda_function_arn
       payload_format_version = "2.0"
       timeout_milliseconds   = 12000
