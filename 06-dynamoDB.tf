@@ -15,10 +15,7 @@ module "dynamodb_table" {
       type = "S"
     },
   ]
-
-  read_capacity = 20
-  write_capacity = 20
-
+  
   ttl_enabled = true
   ttl_attribute_name = "timeToLive"
 
