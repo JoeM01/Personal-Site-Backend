@@ -15,4 +15,8 @@ module "dynamodb_table" {
       type = "S"
     },
   ]
+
+  ttl_enabled = true
+  ttl_attribute_name = "timeToLive"
+
 }

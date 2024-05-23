@@ -22,6 +22,7 @@ class DynamoDBMemory extends BaseListChatMessageHistory {
                 sessionId: this.sessionId,
                 timeStamp: new Date().toISOString(),
                 message: serializedMessage,
+                timeToLive: '1716500816'
             }),
         };
         try {
