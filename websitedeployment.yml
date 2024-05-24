@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: resume-site
-          image: 471112593558.dkr.ecr.us-east-1.amazonaws.com/personal-site:latest
+          image: 679643953080.dkr.ecr.us-east-1.amazonaws.com/personal-site:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
