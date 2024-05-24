@@ -6,7 +6,7 @@ const { mapChatMessagesToStoredMessages, mapStoredMessagesToChatMessages,   Base
 
 
 class DynamoDBMemory extends BaseListChatMessageHistory {
-    constructor({ tableName, sessionId, region }) {
+    constructor({ tableName, sessionId, region  }) {
         super({ sessionId });
         this.tableName = tableName;
         this.sessionId = sessionId;
