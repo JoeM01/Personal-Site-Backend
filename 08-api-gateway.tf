@@ -34,3 +34,4 @@ resource "aws_lambda_permission" "apigateway_permission" {
 output "api_endpoint" {
   value = module.api_gateway.apigatewayv2_api_api_endpoint
 }
+}
