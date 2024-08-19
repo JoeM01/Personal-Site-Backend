@@ -11,15 +11,16 @@ module "api_gateway" {
     allow_origins = ["*"]
   }
 
-  create_api_domain_name = false
+  create_domain_name = false
 
-  integrations = {
+  routes = {
     "POST /generate" = {
-      lambda_arn             = module.lambda_function.lambda_function_arn
-      payload_format_version = "2.0"
-      timeout_milliseconds   = 12000
+      integrations = {
+          lambda_arn             = module.lambda_function.lambda_function_arn
+          payload_format_version = "2.0"
+          timeout_milliseconds   = 12000
+        }
     }
-  }
 }
 
 resource "aws_lambda_permission" "apigateway_permission" {
