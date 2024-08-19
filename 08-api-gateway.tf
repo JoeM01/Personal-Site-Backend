@@ -15,7 +15,7 @@ module "api_gateway" {
 
   routes = {
     "POST /generate" = {
-      integrations = {
+      integration = {
           lambda_arn             = module.lambda_function.lambda_function_arn
           payload_format_version = "2.0"
           timeout_milliseconds   = 12000
